@@ -2,8 +2,8 @@
 
 namespace Shipu\Cruder\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class ViewCommand extends GeneratorCommand
 {
@@ -22,6 +22,7 @@ class ViewCommand extends GeneratorCommand
     protected $description = 'Generates Crud views';
 
     protected $type = 'Views';
+
     private $current_stub;
 
     /**
@@ -32,39 +33,40 @@ class ViewCommand extends GeneratorCommand
     protected function getStub(): array|string
     {
         return [
-            'index.blade.php' => __DIR__ . '/../../resources/stubs/' . config('crudable.css_framework') . '/index.stub',
-            'create.blade.php' => __DIR__ . '/../../resources/stubs/' . config('crudable.css_framework') . '/create.stub',
-            'edit.blade.php' => __DIR__ . '/../../resources/stubs/' . config('crudable.css_framework') . '/edit.stub'
+            'index.blade.php' => __DIR__.'/../../resources/stubs/'.config('crudable.css_framework').'/index.stub',
+            'create.blade.php' => __DIR__.'/../../resources/stubs/'.config('crudable.css_framework').'/create.stub',
+            'edit.blade.php' => __DIR__.'/../../resources/stubs/'.config('crudable.css_framework').'/edit.stub',
         ];
     }
 
     protected function getPath($name): string
     {
-        return resource_path('views/admin/' . $this->getDirectoryName($name));
+        return resource_path('views/admin/'.$this->getDirectoryName($name));
     }
 
     protected function getDirectoryName($name): string
     {
-        return  Str::plural(strtolower(Str::kebab($name)));
+        return Str::plural(strtolower(Str::kebab($name)));
     }
 
     protected function replaceServiceVar($name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
         $class = strtolower(Str::snake(str_replace('Service', '', $class)));
+
         return Str::plural($class);
     }
 
-
     protected function replaceSingularServiceVar($name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return strtolower(Str::snake(str_replace('Service', '', $class)));
     }
 
     protected function replaceViewPath($name): string
     {
-        return Str::plural(Str::kebab(str_replace($this->getNamespace($name) . '\\', '', $name)));
+        return Str::plural(Str::kebab(str_replace($this->getNamespace($name).'\\', '', $name)));
     }
 
     /**
@@ -73,7 +75,6 @@ class ViewCommand extends GeneratorCommand
      * Remove the base controller import if we are already in base namespace.
      *
      * @param  string  $name
-     * @return string
      */
     protected function buildClass($name): string
     {
@@ -81,8 +82,9 @@ class ViewCommand extends GeneratorCommand
         $replace = [
             'DummyServiceVar' => $this->replaceServiceVar($name),
             'DummyViewPath' => $this->replaceViewPath($name),
-            'DummySingularServiceVar' => $this->replaceSingularServiceVar($name)
+            'DummySingularServiceVar' => $this->replaceSingularServiceVar($name),
         ];
+
         return str_replace(
             array_keys($replace),
             array_values($replace),
@@ -93,6 +95,7 @@ class ViewCommand extends GeneratorCommand
     protected function generateClass($name): string
     {
         $stub = $this->files->get($this->current_stub);
+
         return $this->replaceNamespace($stub, $name)->replaceClass($stub, $name);
     }
 
@@ -107,7 +110,8 @@ class ViewCommand extends GeneratorCommand
 
         $path = $this->getPath(strtolower(Str::kebab($this->getNameInput())));
         if ($this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type . ' already exist!');
+            $this->error($this->type.' already exist!');
+
             return false;
         }
 
@@ -116,9 +120,9 @@ class ViewCommand extends GeneratorCommand
         // stub files so that it gets the correctly formatted namespace and class name.
         foreach ($this->getStub() as $name => $stub) {
             $this->current_stub = $stub;
-            $this->makeDirectory($path . '/' . $name);
-            $this->files->put($path . '/' . $name, $this->buildClass($this->getNameInput()));
+            $this->makeDirectory($path.'/'.$name);
+            $this->files->put($path.'/'.$name, $this->buildClass($this->getNameInput()));
         }
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type.' created successfully.');
     }
 }

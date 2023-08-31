@@ -2,9 +2,9 @@
 
 namespace Shipu\Cruder\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
-use Illuminate\Console\GeneratorCommand;
 
 class ServiceCommand extends GeneratorCommand
 {
@@ -26,58 +26,57 @@ class ServiceCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
     protected function getStub(): string
     {
         if ($this->option('contract')) {
-            return __DIR__ . '/../../resources/stubs/contract/service.stub';
+            return __DIR__.'/../../resources/stubs/contract/service.stub';
         }
-        return __DIR__ . '/../../resources/stubs/service.stub';
+
+        return __DIR__.'/../../resources/stubs/service.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     * @return string
+     * @param  string  $rootNamespace
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace . '\\' . config('crudable.default_namespace');
+        return $rootNamespace.'\\'.config('crudable.default_namespace');
     }
 
     /**
      * Replace the service variable in the stub
-     *
-     * @param string $name
-     * @return string
      */
     protected function replaceDummyModelNamespace(string $name): string
     {
         $namespace = $this->replaceDummyModel($name);
         if ($this->laravel->version() >= 8) {
-            return $this->rootNamespace() . 'Models\\' . $namespace;
+            return $this->rootNamespace().'Models\\'.$namespace;
         }
-        return $this->rootNamespace() . $namespace;
+
+        return $this->rootNamespace().$namespace;
     }
 
     protected function replaceServiceVar($name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return strtolower(Str::snake(str_replace('Service', '', $class)));
     }
 
     protected function replaceDummyModel($name): array|string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return str_replace('Service', '', $class);
     }
 
     protected function replaceDummyContract($name): array|string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return str_replace('Service', 'Contract', $class);
     }
 
@@ -86,8 +85,8 @@ class ServiceCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param string $name
-     * @return string
+     * @param  string  $name
+     *
      * @throws FileNotFoundException
      */
     protected function buildClass($name): string
@@ -96,8 +95,9 @@ class ServiceCommand extends GeneratorCommand
             'DummyModelNamespace' => $this->replaceDummyModelNamespace($name),
             'DummyServiceVar' => Str::snake($this->replaceServiceVar($name)),
             'DummyModel' => $this->replaceDummyModel($name),
-            'DummyContract' => $this->replaceDummyContract($name)
+            'DummyContract' => $this->replaceDummyContract($name),
         ];
+
         return str_replace(
             array_keys($replace),
             array_values($replace),
@@ -117,7 +117,7 @@ class ServiceCommand extends GeneratorCommand
         $name = $this->qualifyClass($this->getNameInput());
         $path = $this->getPath($name);
         if ($this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type . ' already exists!');
+            $this->error($this->type.' already exists!');
 
             return false;
         }
@@ -127,6 +127,6 @@ class ServiceCommand extends GeneratorCommand
         // stub files so that it gets the correctly formatted namespace and class name.
         $this->makeDirectory($path);
         $this->files->put($path, $this->buildClass($name));
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type.' created successfully.');
     }
 }

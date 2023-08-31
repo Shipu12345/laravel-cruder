@@ -4,7 +4,8 @@ namespace Shipu\Cruder\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
-class ContractCommand extends GeneratorCommand{
+class ContractCommand extends GeneratorCommand
+{
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +27,8 @@ class ContractCommand extends GeneratorCommand{
      *
      * @return string
      */
-    protected function getStub(){
+    protected function getStub()
+    {
         return __DIR__.'/../../resources/stubs/contract.stub';
     }
 
@@ -34,7 +36,6 @@ class ContractCommand extends GeneratorCommand{
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
@@ -47,7 +48,6 @@ class ContractCommand extends GeneratorCommand{
      * Remove the base controller import if we are already in base namespace.
      *
      * @param  string  $name
-     * @return string
      */
     protected function buildClass($name): string
     {
@@ -55,6 +55,7 @@ class ContractCommand extends GeneratorCommand{
         $replace = [
             'DummyContract' => $this->getNameInput(),
         ];
+
         //dd($replace);
         return str_replace(
             array_keys($replace), array_values($replace), parent::buildClass($name)
@@ -66,7 +67,8 @@ class ContractCommand extends GeneratorCommand{
      *
      * @return mixed
      */
-    public function handle(){
+    public function handle()
+    {
         $this->comment('Building new Crudable contract interface.');
 
         $name = $this->qualifyClass($this->getNameInput());

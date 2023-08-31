@@ -8,6 +8,6 @@ class MissingRelationDataException extends Exception
 {
     public function __construct($type = null)
     {
-        parent::__construct($type . ' is missing required related data.');
+        parent::__construct($type.' is missing required related data.');
     }
 }

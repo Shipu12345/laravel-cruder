@@ -2,6 +2,7 @@
 
 namespace Shipu\Cruder\Contracts;
 
-interface Sluggable {
+interface Sluggable
+{
     //
 }

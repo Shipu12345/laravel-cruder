@@ -9,137 +9,112 @@ use Illuminate\Support\Collection;
 
 interface Crud
 {
-
     /**
      * Return the Eloquent model from the service
-     * @return Model
      */
     public function raw(): Model;
 
     /**
      * Include your where statement here with variable parameters
-     * @param mixed $params
+     *
+     * @param  mixed  $params
      */
     public function where(...$params);
 
     /**
      * Get a single item or a collection of items.
      * Alias of find method when used with ID
-     * @param int|null $id
-     * @return Model|Collection|null
      */
     public function get(int $id = null): Model|Collection|null;
 
     /**
      * Returns the first row of the selected resource
-     * @return Model|null
      */
     public function first(): ?Model;
 
     /**
      * Get a single item
-     * @param int $id
-     * @return Model
      */
     public function find(int $id): Model;
 
     /**
      * Paginate collection result
-     * @param int $perPage defines the number of items per page
+     *
+     * @param  int  $perPage defines the number of items per page
      */
     public function paginate(int $perPage);
 
     /**
      * Get single item or all items from trash if ID is null
-     * @param int|null $id
-     * @return Model|Collection
      */
     public function getTrash(int $id = null): Model|Collection;
 
     /**
      * Get single trashed item
-     * @param int $id
-     * @return Model
      */
     public function getTrashedItem(int $id): Model;
 
     /**
      * Set the related data that should be eager loaded
-     * @param array $relation
-     * @return self
      */
     public function setRelation(array $relation): Crud;
 
     /**
      * Synonymous for setRelation but accepts strings as well as arrays
-     * @param array|string $relations
-     * @return self
      */
     public function with(array|string $relations): Crud;
+
     /**
      * Use ordering in your query
-     * @param string $field ordering field
-     * @param string $order ordering direction asc is default
+     *
+     * @param  string  $field ordering field
+     * @param  string  $order ordering direction asc is default
      */
     public function orderBy(string $field, string $order = 'asc');
 
     /**
      * Create new entry
-     * @param array $data
-     * @return Model
      */
     public function create(array $data): Model;
 
     /**
      * Update model. Make sure fillable is set on the model
-     * @param int $id of model you want to update
-     * @param array $data of model data that should be updated
-     * @param bool $return_model set to true if you need a model instance back
-     * @return bool|Model
+     *
+     * @param  int  $id of model you want to update
+     * @param  array  $data of model data that should be updated
+     * @param  bool  $return_model set to true if you need a model instance back
      */
     public function update(int $id, array $data, bool $return_model = false): Model|bool;
 
     /**
      * Delete item either by softdelete or harddelete
-     * @param int $id
-     * @param bool $hardDelete
-     * @return bool
      */
     public function delete(int $id, bool $hardDelete = false): bool;
 
     /**
      * Restore a soft deleted model
-     * @param int $id
-     * @return bool
      */
     public function restore(int $id): bool;
 
     /**
      * Set hasMany relationship by adding the related model, data and
      * relation name
-     * @param array $data
-     * @param string $relatedModel
-     * @param string $relation
-     * @return self
      */
     public function withHasMany(array $data, string $relatedModel, string $relation): Crud;
 
     /**
      * Add the belongsToMany relationship data to be synced and define
      * the relationship name
-     * @param array $data
-     * @param string $relation
-     * @return self
      */
     public function withBelongsToMany(array $data, string $relation): Crud;
 
     /**
      * Handle a file or photo upload
-     * @param Request $request
-     * @param string $field_name upload field name
-     * @param string $folder storage folder
-     * @param string $storage_disk storage disk to be used
-     * @param bool $randomize to randomize the filename
+     *
+     * @param  string  $field_name upload field name
+     * @param  string  $folder storage folder
+     * @param  string  $storage_disk storage disk to be used
+     * @param  bool  $randomize to randomize the filename
      * @return string filename
      */
     public function handleUpload(Request $request, string $field_name = 'photo', string $folder = 'images', string $storage_disk = 'public', bool $randomize = true): string;
@@ -147,10 +122,6 @@ interface Crud
     /**
      * Handle uploaded file object
      *
-     * @param UploadedFile $file
-     * @param string $folder
-     * @param string $storage_disk
-     * @param boolean $randomize
      * @return string $filename
      */
     public function handleUploadedFile(UploadedFile $file, string $folder = 'images', string $storage_disk = 'public', bool $randomize = true): string;

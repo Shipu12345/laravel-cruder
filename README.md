@@ -24,14 +24,18 @@ php artisan crud:resource :ModelName
 
 It Will Generate Corresponding:
     1) Model
+
     2) Controller
+
     3) Service
+
     4) Migration
+    
     5) Views
 
 
 
-- [:author_name](https://github.com/Shipu12345)
+- [Shipu](https://github.com/Shipu12345)
 
 ## License
 

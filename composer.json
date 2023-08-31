@@ -1,5 +1,6 @@
 {
-    "name": "shipu/laravel-cruder",
+    "name": "shipus/laravel-cruder",
+    "version": "1.0.0",
     "description": "make auto crud's from command",
     "keywords": [
         "shipu",

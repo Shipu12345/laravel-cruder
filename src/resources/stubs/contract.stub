@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Contracts;
+
+use Shipu\Cruder\Contracts\Crud;
+
+interface DummyContract extends Crud{
+    //place your custom code here
+}
+

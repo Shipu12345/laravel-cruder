@@ -1,0 +1,17 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyModelNamespace;
+use Shipu\Cruder\Contracts\Crud;
+use Shipu\Cruder;
+
+class DummyClass implements Crud {
+
+    use Cruder\Crudable;
+
+    public function __construct(DummyModel $DummyServiceVar) {
+        $this->model = $DummyServiceVar;
+    }
+
+}

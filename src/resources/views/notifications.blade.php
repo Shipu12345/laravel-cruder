@@ -1,0 +1,1 @@
+@include('crudable::'.config('crudable.css_framework').'-notifications')

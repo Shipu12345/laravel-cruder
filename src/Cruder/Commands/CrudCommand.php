@@ -2,9 +2,9 @@
 
 namespace Shipu\Cruder\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Console\GeneratorCommand;
 
 class CrudCommand extends GeneratorCommand
 {
@@ -29,7 +29,6 @@ class CrudCommand extends GeneratorCommand
      */
     protected $type = 'Resource';
 
-
     /**
      * Get the stub file for the generator.
      *
@@ -37,7 +36,7 @@ class CrudCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return;
+
     }
 
     protected function parseModel(string $model): string
@@ -48,11 +47,11 @@ class CrudCommand extends GeneratorCommand
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
             if ($this->laravel->version() >= 8) {
-                $model = $rootNamespace . 'Models\\' . $model;
+                $model = $rootNamespace.'Models\\'.$model;
             } else {
-                $model = $rootNamespace . $model;
+                $model = $rootNamespace.$model;
             }
         }
 
@@ -61,13 +60,13 @@ class CrudCommand extends GeneratorCommand
 
     public function handle(): void
     {
-//        if ($this->option('silent')) {
-//            $this->handleSilent();
-//        } else {
-//            $this->handleVerbose();
-//        }
+        //        if ($this->option('silent')) {
+        //            $this->handleSilent();
+        //        } else {
+        //            $this->handleVerbose();
+        //        }
         $this->handleSilent();
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type.' created successfully.');
         $this->info('Do not forget to register any bindings.');
     }
 
@@ -78,7 +77,7 @@ class CrudCommand extends GeneratorCommand
 
         //Check if the model exists
         $modelClass = $this->parseModel($this->getNameInput());
-        if (!class_exists($modelClass)) {
+        if (! class_exists($modelClass)) {
             if ($this->confirm("The {$modelClass} model does not exist. Do you want to generate it?", true)) {
                 $this->call('make:model', ['name' => $modelClass,
                     '--migration' => true,
@@ -87,21 +86,21 @@ class CrudCommand extends GeneratorCommand
         }
 
         //Generate service
-        if ($this->confirm("Would you like to generate the service class?", true)) {
+        if ($this->confirm('Would you like to generate the service class?', true)) {
             if ($this->option('contract')) {
-                $this->call('crud:service', ['name' => $this->getNameInput() . 'Service', '--contract' => true]);
+                $this->call('crud:service', ['name' => $this->getNameInput().'Service', '--contract' => true]);
             } else {
-                $this->call('crud:service', ['name' => $this->getNameInput() . 'Service']);
+                $this->call('crud:service', ['name' => $this->getNameInput().'Service']);
             }
         }
 
         //Generate controller
-        if ($this->confirm("Would you like to generate a resource controller?", true)) {
+        if ($this->confirm('Would you like to generate a resource controller?', true)) {
             $namespace = $this->ask('Namespace for the controller?', 'default');
             if ($namespace == 'default') {
-                $controller_name = $this->getNameInput() . 'Controller';
+                $controller_name = $this->getNameInput().'Controller';
             } else {
-                $controller_name = $namespace . '\\' . $this->getNameInput() . 'Controller';
+                $controller_name = $namespace.'\\'.$this->getNameInput().'Controller';
             }
             if ($this->option('contract')) {
                 $this->call('crud:controller', ['name' => $controller_name, '--contract' => true]);
@@ -111,8 +110,8 @@ class CrudCommand extends GeneratorCommand
         }
 
         //Generate custom contract
-        if ($this->option('contract') && $this->confirm("Would you like to generate a custom contract?", true)) {
-            $this->call('crud:contract', ['name' => $this->getNameInput() . 'Contract']);
+        if ($this->option('contract') && $this->confirm('Would you like to generate a custom contract?', true)) {
+            $this->call('crud:contract', ['name' => $this->getNameInput().'Contract']);
         }
 
         //Generate Views
@@ -128,18 +127,18 @@ class CrudCommand extends GeneratorCommand
 
         //Check if the model exists
         $modelClass = $this->parseModel($this->getNameInput());
-        if (!class_exists($modelClass)) {
+        if (! class_exists($modelClass)) {
             $this->call('make:model', ['name' => $modelClass,
                 '--migration' => true,
                 '--requests' => true]);
         }
         //Generate service class
-        $this->call('crud:service', ['name' => $this->getNameInput() . 'Service']);
+        $this->call('crud:service', ['name' => $this->getNameInput().'Service']);
         //Generate controller
         if (empty(config('crudable.default_resource'))) {
-            $controller_name = $this->getNameInput() . 'Controller';
+            $controller_name = $this->getNameInput().'Controller';
         } else {
-            $controller_name = config('crudable.default_resource') . '\\' . $this->getNameInput() . 'Controller';
+            $controller_name = config('crudable.default_resource').'\\'.$this->getNameInput().'Controller';
         }
         $this->call('crud:controller', ['name' => $controller_name]);
         $this->call('crud:views', ['name' => $this->getNameInput()]);

@@ -2,9 +2,9 @@
 
 namespace Shipu\Cruder\Commands;
 
+use Illuminate\Console\GeneratorCommand;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
-use Illuminate\Console\GeneratorCommand;
 
 class ControllerCommand extends GeneratorCommand
 {
@@ -28,40 +28,40 @@ class ControllerCommand extends GeneratorCommand
      * Get the default namespace for the class.
      *
      * @param  string  $rootNamespace
-     * @return string
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace . '\Http\Controllers';
+        return $rootNamespace.'\Http\Controllers';
     }
 
     /**
      * Replace the service variable in the stub
-     *
-     * @param string $name
-     * @return string
      */
     protected function replaceServiceVar(string $name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return Str::plural(strtolower(Str::snake(str_replace('Controller', '', $class))));
     }
 
     protected function replaceSingularServiceVar($name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return strtolower(Str::snake(str_replace('Controller', '', $class)));
     }
 
     protected function replaceViewPath($name): string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return Str::plural(Str::kebab(str_replace('Controller', '', $class)));
     }
 
     protected function replaceDummyContract($name): array|string
     {
-        $class = str_replace($this->getNamespace($name) . '\\', '', $name);
+        $class = str_replace($this->getNamespace($name).'\\', '', $name);
+
         return str_replace('Controller', 'Contract', $class);
     }
 
@@ -70,8 +70,9 @@ class ControllerCommand extends GeneratorCommand
      *
      * Remove the base controller import if we are already in base namespace.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
+     *
      * @throws FileNotFoundException
      */
     protected function buildClass($name)
@@ -83,7 +84,7 @@ class ControllerCommand extends GeneratorCommand
             'DummyViewPath' => $this->replaceViewPath($name),
             'DummyServiceVar' => $this->replaceServiceVar($name),
             'DummySingularServiceVar' => $this->replaceSingularServiceVar($name),
-            'DummyContract' => $this->replaceDummyContract($name)
+            'DummyContract' => $this->replaceDummyContract($name),
         ]);
 
         return str_replace(
@@ -101,18 +102,20 @@ class ControllerCommand extends GeneratorCommand
     protected function getStub()
     {
         if ($this->option('blank')) {
-            return __DIR__ . '/../../resources/stubs/controller.blank.stub';
+            return __DIR__.'/../../resources/stubs/controller.blank.stub';
         }
         if ($this->option('contract')) {
-            return __DIR__ . '/../../resources/stubs/contract/controller.stub';
+            return __DIR__.'/../../resources/stubs/contract/controller.stub';
         }
-        return __DIR__ . '/../../resources/stubs/controller.stub';
+
+        return __DIR__.'/../../resources/stubs/controller.stub';
     }
 
     /**
      * Execute the console command.
      *
      * @return mixed
+     *
      * @throws FileNotFoundException
      */
     public function handle()
@@ -126,7 +129,7 @@ class ControllerCommand extends GeneratorCommand
         $name = $this->qualifyClass($this->getNameInput());
         $path = $this->getPath($name);
         if ($this->alreadyExists($this->getNameInput())) {
-            $this->error($this->type . ' already exists!');
+            $this->error($this->type.' already exists!');
 
             return false;
         }
@@ -137,6 +140,6 @@ class ControllerCommand extends GeneratorCommand
         $this->makeDirectory($path);
         $this->files->put($path, $this->buildClass($name));
 
-        $this->info($this->type . ' created successfully.');
+        $this->info($this->type.' created successfully.');
     }
 }

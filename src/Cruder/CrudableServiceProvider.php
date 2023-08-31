@@ -2,31 +2,31 @@
 
 namespace Shipu\Cruder;
 
-use Shipu\Cruder\Contracts\Crud;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\ServiceProvider;
+use Shipu\Cruder\Contracts\Crud;
 
 class CrudableServiceProvider extends ServiceProvider
 {
-
     public function boot(): void
     {
         //Publish config and translations
         $this->publishes([
-            __DIR__ . '/../config/crudable.php' => config_path('crudable.php'),
+            __DIR__.'/../config/crudable.php' => config_path('crudable.php'),
         ]);
         //Add views
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'crudable');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'crudable');
 
         //Add Routes
         $this->loadRoutesFrom(__DIR__.'/../resources/routes.php');
 
         // Add Migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations',);
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 
     /**
      * Register the service provider.
+     *
      * @throws BindingResolutionException
      */
     public function register(): void
@@ -42,7 +42,7 @@ class CrudableServiceProvider extends ServiceProvider
         ]);
         //Merge config
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/crudable.php',
+            __DIR__.'/../config/crudable.php',
             'crudable'
         );
         //Load config

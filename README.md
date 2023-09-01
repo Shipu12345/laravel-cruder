@@ -19,7 +19,7 @@ composer require shipu/laravel-cruder
 You can generate files with:
 
 ```bash
-php artisan crud:resource :ModelName
+php artisan crud:resource ModelName
 ```
 
 It Will Generate Corresponding:
@@ -30,7 +30,7 @@ It Will Generate Corresponding:
     3) Service
 
     4) Migration
-    
+
     5) Views
 
 
